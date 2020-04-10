@@ -1,27 +1,26 @@
+<a (click)="openModal(template)">Sign up</a>
 
-<a (click)="openModal(template)">Sign up</a >
-  
 <!-- Maintain this template so that we may reference it without having to refactor the way the page works -->
-<ng-template #template >
+<ng-template #template>
 
   <p *ngIf="success != ''" class="success">{{success}}</p>
-  
+
   <div class="modal-header">
     <h4 class="modal-title">Sign Up</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  
+
   <div class="modal-body">
 
 
-  <!-- Added the ngSubmit directive here, which calls the onSubmit() function
+    <!-- Added the ngSubmit directive here, which calls the onSubmit() function
   whenever the form is submitted. Because we are using the reactive form, onSubmit 
   does not require any sort of reference to this form. The synchronized implementation 
   means that we can access the form from anywhere in the component. Remember that it is 
   accessed via the 'signUpForm' variable of type FormGroup.-->
-  <form  [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
 
       <!-- This is the DRIVER / RIDER button group. -->
       <!-- It doesn't require validation, because it is boolean. -->
@@ -33,47 +32,28 @@
       <!-- This form group contains the FIRST NAME field input. -->
       <div class="form-group">
         <label for="firstname">First Name</label>
-        <input
-          type="text"
-          id="firstname"
-          class="form-control" 
-          name="firstname" 
-          formControlName="firstname" />
+        <input type="text" id="firstname" class="form-control" name="firstname" formControlName="firstname" />
         <control-messages [control]="signUpForm.get('firstname')"></control-messages>
       </div>
 
       <!-- This form group contains the LAST NAME field input. -->
       <div class="form-group">
         <label for="lastname">Last Name</label>
-        <input
-          type="text"
-          id="lastname"
-          class="form-control" 
-          name="lastname" 
-          formControlName="lastname" />
-          <control-messages [control]="signUpForm.get('lastname')"></control-messages>
+        <input type="text" id="lastname" class="form-control" name="lastname" formControlName="lastname" />
+        <control-messages [control]="signUpForm.get('lastname')"></control-messages>
       </div>
 
       <!-- This form group contains the EMAIL field input. -->
       <div class="form-group">
         <label for="email">Email</label>
-        <input
-          type="text"
-          id="email"
-           class="form-control"  
-           name="email"  
-           formControlName="email"/>
-           <control-messages [control]="signUpForm.get('email')"></control-messages>
+        <input type="text" id="email" class="form-control" name="email" formControlName="email" />
+        <control-messages [control]="signUpForm.get('email')"></control-messages>
       </div>
 
       <!-- This form group contains the PHONE NUMBER field input. -->
       <div class="form-group">
         <label for="phonenumber">Phone Number</label>
-        <input
-          type="text"
-          id="phonenumber"
-          formControlName="phonenumber"
-          class="form-control">
+        <input type="text" id="phonenumber" formControlName="phonenumber" class="form-control">
         <control-messages [control]="signUpForm.get('phonenumber')"></control-messages>
       </div>
 
@@ -88,10 +68,10 @@
         <control-messages [control]="signUpForm.get('batch')"></control-messages>
       </div> -->
       <div class="form-group">
-        <select id="batch" formControlName="batch" class="form-control" >
+        <select id="batch" formControlName="batch" class="form-control">
           <option value="" disabled>Choose your Batch</option>
           <option *ngFor="let batch of batches">
-          {{batch.batchLocation}}</option>
+            {{batch.batchLocation}}</option>
         </select>
         <control-messages [control]="signUpForm.get('batch')"></control-messages>
       </div>
@@ -108,47 +88,27 @@
       <div class="form-group">
         <label for="hAddress">Address</label>
         <!-- Added OPTIONS binding, #PLACESREF reference, and ONADDRESSCHANGE event. -->
-        <input id="address"
-          ngx-google-places-autocomplete 
-          [options]='options' 
-          #placesRef="ngx-places"
-          (change)="handleAddressChange($event)" 
-          class="form-control"/>
-          <!-- <control-messages [control]="signUpForm.get('address')"></control-messages> -->
+        <input id="address" ngx-google-places-autocomplete [options]='options' #placesRef="ngx-places"
+          (change)="handleAddressChange($event)" class="form-control" />
+        <!-- <control-messages [control]="signUpForm.get('address')"></control-messages> -->
       </div>
 
       <!-- This form group contains the CITY field input. -->
       <div class="form-group">
         <label id="hCity">City</label>
-        <input
-          readonly
-          type="text"
-          id="city"
-          formControlName="city"
-          class="form-control" 
-          value="{{city}}">
+        <input readonly type="text" id="city" formControlName="city" class="form-control" value="{{city}}">
       </div>
 
       <!-- This form group contains the STATE field input. -->
       <div class="form-group">
         <label id="hState">State</label>
-        <input
-          readonly
-          type="text"
-          id="state"
-          formControlName="state"
-          class="form-control" 
-          value="{{state}}">
+        <input readonly type="text" id="state" formControlName="state" class="form-control" value="{{state}}">
       </div>
 
       <!-- This form group contains the ZIP CODE field input. -->
       <div class="form-group">
         <label id="hZip">Zip Code</label>
-        <input 
-          type="text"
-          id="zipcode"
-          formControlName="zipcode"
-          class="form-control">
+        <input type="text" id="zipcode" formControlName="zipcode" class="form-control">
       </div>
 
 
@@ -163,39 +123,26 @@
       <!-- This form group contains the USERNAME field input. -->
       <div class="form-group">
         <label for="userName">User Name</label>
-        <input
-          type="text"
-          id="username"
-          formControlName="username"
-          class="form-control">
+        <input type="text" id="username" formControlName="username" class="form-control">
       </div>
 
       <!-- This form group contains the PASSWORD field input. -->
       <div class="form-group">
         <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="form-control">
+        <input type="password" id="password" formControlName="password" class="form-control">
       </div>
 
       <div class="btn-container">
-<<<<<<< HEAD
-         <input class="btn btn-primary register" type="submit" value="Submit"/>
+        <input class="btn btn-primary register" type="submit" value="Submit" />
+        <app-dialog [(visible)]="showDialog" [(header)]="header" [(message)]="message">
+          <button (click)="showDialog = !showDialog" class="btn">Close</button>
+        </app-dialog>
       </div>
-      <app-dialog [(visible)]="showDialog" [(header)]="header" [(message)]="message" >
-        <button (click)="showDialog = !showDialog" class="btn">Close</button>
-      </app-dialog>
-=======
-        <input class="btn btn-primary register" type="submit" value="Submit"/>
-      </div>
-    
->>>>>>> form-validation
+
+
     </form>
 
 
 
   </div>
-</ng-template> 
-
+</ng-template>
