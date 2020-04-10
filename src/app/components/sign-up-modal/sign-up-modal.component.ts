@@ -6,7 +6,10 @@ import { DOCUMENT } from '@angular/common';
 import { ValidationService } from '../../validation.service';
 import {Batch} from 'src/app/models/batch';
 import { BatchService } from 'src/app/services/batch-service/batch.service';
+<<<<<<< HEAD
 
+=======
+>>>>>>> form-validation
 /*** In this commit, I:
   -downloaded the google places package by issuing "npm install ngx-google-places-autocomplete",
   -imported GooglePlaceModule from "ngx-google-places-autocomplete",
@@ -32,9 +35,12 @@ export class SignupModalComponent implements OnInit {
   addressLine: string;
   city: string;
   state: string;
+<<<<<<< HEAD
   showDialog : boolean = false;
   header: string ;
   message: string;
+=======
+>>>>>>> form-validation
 
 //for batch grabbing
 batches:Batch[];
@@ -66,10 +72,18 @@ options = {
     'email': new FormControl('', [Validators.required,ValidationService.emailValidator]),
     'phonenumber': new FormControl('', [Validators.required,ValidationService.phoneNumberValidator,Validators.minLength(10) ]),
     'batch': new FormControl('', [Validators.required,Validators.maxLength(3)]),
+<<<<<<< HEAD
     //to be addressed *budump-ts 
     'address': new FormControl('', Validators.required),
     'city': new FormControl('', Validators.required),
     'state': new FormControl('', Validators.required),
+=======
+
+    //to be addressed *budump-ts 
+    'address': new FormControl('', Validators.required),
+    'city': new FormControl('', Validators.required),
+   'state': new FormControl('', Validators.required),
+>>>>>>> form-validation
     'zipcode': new FormControl('', Validators.required),
     'username': new FormControl('', Validators.required),
     'password': new FormControl('', Validators.required)
@@ -120,11 +134,17 @@ options = {
         //     return;
         // }
 
+<<<<<<< HEAD
     // display form values on success
     // Turns modal popup off/on 
     this.showDialog = !this.showDialog;
     this.header =  "Form submission successful."
     this.message= "You can now login with your username and password";
+=======
+        // display form values on success
+        alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.signUpForm.value, null, 4));
+    
+>>>>>>> form-validation
   }
 
 }

@@ -15,7 +15,11 @@
           return response.json();
         })
         .then((data) => {
+<<<<<<< HEAD
           document.getElementById("mapKey").setAttribute("src")
+=======
+          document.getElementById("mapKey").setAttribute("src", `http://maps.googleapis.com/maps/api/js?key=${data.googleMapAPIKey[0]}&libraries=places&language=en`)
+>>>>>>> form-validation
         });
     </script>
     <script id = "mapKey"></script>
