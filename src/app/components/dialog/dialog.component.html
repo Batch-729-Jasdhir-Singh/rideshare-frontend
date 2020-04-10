@@ -1,0 +1,7 @@
+<div [@dialog] *ngIf="visible" class="dialog">
+	<h3>{{header}}</h3>
+	<p>{{message}}</p>
+	<ng-content></ng-content>
+	<button *ngIf="closable" (click)="close()" aria-label="Close" class="dialog__close-btn"></button>
+</div>
+<div *ngIf="visible" class="overlay" (click)="close()"></div>

@@ -2,15 +2,83 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { MyCarComponent } from './components/my-car/my-car.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { PreferenceComponent } from './components/preference/preference.component';
+import { ValidationService } from './services/validation-service/validation.service';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { DriverInfoComponent } from './components/driver-info/driver-info.component';
+import { LandingComponent } from './components/landing/landing.component';
+import { SignupModalComponent } from './components/sign-up-modal/sign-up-modal.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ProfileContactComponent } from './components/profile-contact/profile-contact.component';
+import { ProfileCarComponent } from './components/profile-car/profile-car.component';
+import { ProfileLocationComponent } from './components/profile-location/profile-location.component';
+import { ProfileMembershipComponent } from './components/profile-membership/profile-membership.component';
+import { DriverContactModalComponent } from './components/driver-contact-modal/driver-contact-modal.component';
+import { DriverListComponent } from './components/driver-list/driver-list.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { UserRegisterComponent } from './components/user-register/user-register.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
+//Add the GooglePlaceModule for simplistic implementation and configuration of autocomplete.
+//It is also imported in the imports array below.
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import { ControlMessagesComponent } from './control-messages.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RegisterComponent,
+    DriverComponent,
+    AdminComponent,
+    LoginComponent,
+    CarRegisterComponent,
+    LoginComponent,
+    NavbarComponent,
+    MyCarComponent,
+    ProfileComponent,
+    PreferenceComponent,
+    AdminLoginComponent,
+    DriverInfoComponent,
+    LandingComponent,
+    SignupModalComponent,
+    LandingPageComponent,
+    ProfileContactComponent,
+    ProfileCarComponent,
+    ProfileLocationComponent,
+    ProfileMembershipComponent,
+    DriverContactModalComponent,
+    DriverListComponent,
+    UserRegisterComponent,
+    HomePageComponent,
+    BsNavbarComponent,
+    ControlMessagesComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ModalModule.forRoot(),
+    NgbModule,
+    BrowserAnimationsModule,
+    GooglePlaceModule
+  ],
+  providers: [
+    UserService,
+    CarService,
+    BatchService,
+    AuthService,
+    ValidationService,
+    BsModalService
   ],
   providers: [],
   bootstrap: [AppComponent]
