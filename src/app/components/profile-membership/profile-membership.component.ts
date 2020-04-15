@@ -1,6 +1,7 @@
 import { Component, OnInit , Input, Output, EventEmitter} from '@angular/core';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { User } from 'src/app/models/user';
+import { Batch } from 'src/app/models/batch';
 @Component({
   selector: 'app-profile-membership',
   templateUrl: './profile-membership.component.html',
@@ -16,6 +17,7 @@ export class ProfileMembershipComponent implements OnInit {
   @Input() isActive:boolean;
   @Input() userId:number ;
   @Output() onDriverStatus = new EventEmitter();
+ // batch:Batch;
   isDriver:boolean;
   constructor(private userService: UserService) { }
   ngOnInit() {
@@ -23,6 +25,7 @@ export class ProfileMembershipComponent implements OnInit {
       this.user = response;
       this.driverSelect = response.driver;
       this.isActive = response.active;
+     // this.batch=response.batch
     })
   }
   updatesMembershipInfo(){

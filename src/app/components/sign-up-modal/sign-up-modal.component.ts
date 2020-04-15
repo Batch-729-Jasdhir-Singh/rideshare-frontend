@@ -99,8 +99,8 @@ export class SignupModalComponent implements OnInit {
     input field's select element with option elements.*/
   setBatch() {
     let batchField = <HTMLInputElement>document.getElementById('batch');
-    let batchSplit = batchField.value.split(". ", 2);
-
+    let batchSplit = batchField.value.split(":", 2);
+    console.log(batchSplit[0])
    this.batchService.getBatchById(batchSplit[0]).subscribe((response)=>{
         console.log("response"+response.batchNumber)
         this.batch=response;

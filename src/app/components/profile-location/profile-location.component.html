@@ -1,12 +1,12 @@
 <!-- refactored -->
 <div class="container mainContainer">
     <i class="fa fa-home" style="font-family:'FontAwesome';"></i>
-       <app-google-place (googlePlaceObj)="getGooglePlace($event)"></app-google-place>
+    <!--   <app-google-place (googlePlaceObj)="getGooglePlace($event)"></app-google-place>-->
         <h4>Location:</h4>
         <form [formGroup] = "profileLocation" (ngSubmit)="updatesLocationInfo()">
         <div class="form-group row">
             <div class="col-sm-1"></div>
-                <label for="address" class="col-sm-4 col-form-label">Address:</label>
+                <label for="address" class="col-sm-4 col-form-label">Housing Address:</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="address" [(ngModel)]=profileLocation.value.address formControlName="address" required>
                     <div *ngIf="!validInput.address.valid && !validInput.address.untouched" class="text-danger">Required</div>
@@ -15,7 +15,7 @@
         
         <div class="form-group row">
                 <div class="col-sm-1"></div>
-            <label for="address2" class="col-sm-4 col-form-label">Address 2:</label>
+            <label for="address2" class="col-sm-4 col-form-label">Work Location:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="address2" [(ngModel)]=profileLocation.value.address2 formControlName="address2" required>
                 <div *ngIf="!validInput.address2.valid && !validInput.address2.untouched" class="text-danger">Required</div>
