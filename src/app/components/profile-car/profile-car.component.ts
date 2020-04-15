@@ -93,7 +93,7 @@ export class ProfileCarComponent implements OnInit {
           //console.log(res)
           this.success = "Updated Successfully!";
         }, error=>{
-          this.success = "Error occurred, Update was unsucessful"
+          this.success = "Error occurred, Update was unsuccessful"
         });
       }
    
@@ -107,7 +107,5 @@ export class ProfileCarComponent implements OnInit {
     return this.profileForm.controls;
   
   }
-
-  
 
 }

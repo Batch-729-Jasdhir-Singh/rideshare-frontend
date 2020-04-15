@@ -9,12 +9,6 @@ import { UserService } from 'src/app/services/user-service/user.service';
 
 
 
-/***
-  import { FormGroup, FormControl, Validators } from '@angular/forms';
-  import { UserService } from 'src/app/services/user-service/user.service';
-  import { Batch } from 'src/app/models/batch';
-  import { User } from 'src/app/models/user';
- ***/
 
 
 
@@ -64,18 +58,22 @@ export class SignupModalComponent implements OnInit {
   }
 
   generateFormGroup() {
+    //These validators are REQUIRED BY THE DATABASE. DO NOT CHANGE UNLESS YOU KNOW WHAT YOU ARE DOING.
     this.signUpForm = new FormGroup({
-      'firstname': new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(35)]),//, ValidationService.stringValidator
-      'lastname': new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(35)]),//, ValidationService.stringValidator
+      'firstname': new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(35), Validators.pattern(/^[A-Za-z]+$/)]),//, ValidationService.stringValidator
+      'lastname': new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(35), Validators.pattern(/^[A-Za-z]+$/)]),//, ValidationService.stringValidator
+      //email optional (RFC 2822 compliant) regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
       'email': new FormControl('', [Validators.required, Validators.email]),
-      'phonenumber': new FormControl('', [Validators.required, Validators.minLength(10)]),//, ValidationService.phoneNumberValidator
+      //phonenumber regex (Valid formats: [(123) 456-7890, (123)456-7890, 123-456-7890, 123.456.7890, 1234567890, +31636363634, 075-63546725]).
+      'phonenumber': new FormControl('', [Validators.required, Validators.minLength(10), Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)]),
       'batch': new FormControl('', Validators.required),
-      //to be addressed *budump-ts 
+      //ddress is validated by autocompletion. The field values are readonly- inserted into by the autocomplete field.
+      //Only the required field is needed to ensure that autocomplete is used.
       'address': new FormControl(''),
       'city': new FormControl(''),
       'state': new FormControl(''),
       'zipcode': new FormControl('', [Validators.required, Validators.minLength(5)]),
-      'username': new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(12)]),//These validators are required by the database.
+      'username': new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(12)]),
       'password': new FormControl('', Validators.required)
     })
   }
@@ -117,8 +115,10 @@ export class SignupModalComponent implements OnInit {
   /** HANDLEADDRESSCHANGE()
     This method is called on an event listener for when the autocomplete field is changed. It 
     updates the address values of the FormGroup.*/
-  public handleAddressChange(address: any) {
-    console.log("handleAddressChange() with address: " + address.srcElement.value);
+  public handleAddressChange() {
+    console.log("*********************address change event");
+    console.log("*********************address change event");
+    /*console.log("handleAddressChange() with address: " + address.srcElement.value);
     let splitted = (address.srcElement.value).split(", ", 3);
     this.addressLine = splitted[0];
     this.city = splitted[1];
@@ -129,7 +129,7 @@ export class SignupModalComponent implements OnInit {
       this.state = null;
     }else {
       return;
-    }
+    }*/
   }
 
   /** ONSUBMIT()

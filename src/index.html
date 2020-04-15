@@ -9,7 +9,7 @@
     
     
     
-    <script defer>
+    <script async>
       fetch('http://localhost:8080/login/getGoogleApi')
         .then((response) => {
           return response.json();
@@ -18,7 +18,7 @@
           document.getElementById("mapKey").setAttribute("src", `https://maps.googleapis.com/maps/api/js?key=${data.googleMapAPIKey[0]}&libraries=places&language=en`)
         });
     </script>
-    <script id = "mapKey"></script>
+    <script async id = "mapKey"></script>
       </head>
   <body>
     

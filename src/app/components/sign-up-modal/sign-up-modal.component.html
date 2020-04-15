@@ -98,7 +98,7 @@
             Choose your Batch
           </option>
           <option *ngFor="let batch of batches">
-            {{batch.batchNumber}}. {{batch.batchLocation}}
+            {{batch.batchNumber}}: {{batch.batchLocation}}
           </option>
         </select>
         <span 
@@ -119,15 +119,8 @@
       <!-- This form group contains the AUTOPLACES field input. -->
       <div class="form-group">
         <label for="autoplaces">Address</label>
-        <input 
-          id="autoplaces" 
-          formControlName="address" 
-          placeholder="{{addressLine}}" 
-          ngx-google-places-autocomplete 
-          [options]='options' 
-          #placesRef="ngx-places"
-          (change)="handleAddressChange($event)" 
-          class="form-control"/>
+        <app-google-place>
+        </app-google-place>
         <!-- Validation. -->
         <span 
           *ngIf="this.city==null && signUpForm.get('address').touched"
@@ -144,6 +137,7 @@
           type="text"
           id="address"
           class="form-control" 
+          formControlName="address" 
           placeholder="{{addressLine}}">
       </div>
 

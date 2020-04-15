@@ -33,9 +33,13 @@ export class GooglePlaceComponent implements AfterViewInit {
       const place = autocomplete.getPlace();
       console.log("This place object of type <any>: ");
       console.log(place);
-      console.log(place.formatted_address);
+      console.log("place.formatted_address = " + place.formatted_address);
       this.addressEntities = place.address_components;
-      console.log();
+      console.log("Removing any existing 'googlePlace' object of type <any>.");
+      sessionStorage.removeItem('googlePlace');
+      console.log("Setting a new key 'googlePlace' with value of 'place' object, which was retrieved in the google-place component.");
+      sessionStorage.setItem('googlePlace', place);
+      /*console.log();
       console.log("****** length of address array is: " + this.addressEntities.length + " ******");
       console.log("STREET NUMBER: " + this.addressEntities[0].long_name);
       console.log("STREET NAME: " + this.addressEntities[1].long_name);
@@ -46,7 +50,7 @@ export class GooglePlaceComponent implements AfterViewInit {
       console.log("COUNTRY: " + this.addressEntities[6].long_name);
       console.log("POSTAL/ZIP CODE: " + this.addressEntities[7].long_name);
       console.log("DELIVERY ROUTE: " + this.addressEntities[7].long_name);
-      console.log();
+      console.log();*/
     });
 
   }

@@ -34,14 +34,7 @@ export class ValidationService {
 
   static phoneNumberValidator(control) {
     /*
-    Valid formats:
-        (123) 456-7890
-        (123)456-7890
-        123-456-7890
-        123.456.7890
-        1234567890
-        +31636363634
-        075-63546725
+    Valid formats: (123) 456-7890, (123)456-7890, 123-456-7890, 123.456.7890, 1234567890, +31636363634, 075-63546725.
     */
     if (control.value.match(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)) {
       return null;
