@@ -113,24 +113,12 @@ export class SignupModalComponent implements OnInit {
     //TODO: Write a method that uses AJAX to check if the username added is already existing.
   }
 
-  /** HANDLEADDRESSCHANGE()
-    This method is called on an event listener for when the autocomplete field is changed. It 
-    updates the address values of the FormGroup.*/
-  public handleAddressChange() {
-    console.log("*********************address change event");
-    console.log("*********************address change event");
-    /*console.log("handleAddressChange() with address: " + address.srcElement.value);
-    let splitted = (address.srcElement.value).split(", ", 3);
-    this.addressLine = splitted[0];
-    this.city = splitted[1];
-    this.state = splitted[2];
-    if(this.city == null) {
-      this.addressLine = null;
-      this.city = null;
-      this.state = null;
-    }else {
-      return;
-    }*/
+  /** GETGOOGLEPLACEEVENT()
+    This method is called on an event emission from the google-place component. It passes us a 
+    reference of the 'place' object created within the component.*/
+  getGooglePlace(place) {
+    console.log(place);
+    console.log(place.formatted_address);
   }
 
   /** ONSUBMIT()

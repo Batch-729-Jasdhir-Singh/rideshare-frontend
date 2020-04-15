@@ -119,8 +119,7 @@
       <!-- This form group contains the AUTOPLACES field input. -->
       <div class="form-group">
         <label for="autoplaces">Address</label>
-        <app-google-place>
-        </app-google-place>
+        <app-google-place (googlePlaceObj)="getGooglePlace($event)" class="form-control"></app-google-place>
         <!-- Validation. -->
         <span 
           *ngIf="this.city==null && signUpForm.get('address').touched"

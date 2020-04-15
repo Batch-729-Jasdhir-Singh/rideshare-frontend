@@ -10,10 +10,13 @@ declare var google;
 })
 export class GooglePlaceComponent implements AfterViewInit {
   @ViewChild('addresstext', {static: false}) addresstext: any;
+  @Output() googlePlaceObj = new EventEmitter();
+
+
 
   addressEntities: Array<any>;
 
-  @Output() googlePlaceObj = new EventEmitter();
+
 
   constructor() { }
 
@@ -33,27 +36,8 @@ export class GooglePlaceComponent implements AfterViewInit {
     //The function called will get the 'place' object of type <any> and captures from it the 'address_components' array into our 'addressEntities' <any> array.
     google.maps.event.addListener(autocomplete, 'place_changed', () => {
       const place = autocomplete.getPlace();
+      //Emit the custom event declared above in the @Output decorator. A reference to the 'place' object is passed as a parameter.
       this.googlePlaceObj.emit(place);
-      console.log("This place object of type <any>: ");
-      console.log(place);
-      console.log("place.formatted_address = " + place.formatted_address);
-      this.addressEntities = place.address_components;
-      console.log("Removing any existing 'googlePlace' object of type <any>.");
-      sessionStorage.removeItem('googlePlace');
-      console.log("Setting a new key 'googlePlace' with value of 'place' object, which was retrieved in the google-place component.");
-      sessionStorage.setItem('googlePlace', place);
-      /*console.log();
-      console.log("****** length of address array is: " + this.addressEntities.length + " ******");
-      console.log("STREET NUMBER: " + this.addressEntities[0].long_name);
-      console.log("STREET NAME: " + this.addressEntities[1].long_name);
-      console.log("CITY: " + this.addressEntities[2].long_name);
-      console.log("DISTRICT: " + this.addressEntities[3].long_name);
-      console.log("COUNTY: " + this.addressEntities[4].long_name);
-      console.log("STATE: " + this.addressEntities[5].long_name);
-      console.log("COUNTRY: " + this.addressEntities[6].long_name);
-      console.log("POSTAL/ZIP CODE: " + this.addressEntities[7].long_name);
-      console.log("DELIVERY ROUTE: " + this.addressEntities[7].long_name);
-      console.log();*/
     });
 
   }
