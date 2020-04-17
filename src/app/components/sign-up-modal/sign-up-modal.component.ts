@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef} from 'ngx-bootstrap';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ValidationService } from '../../validation.service';
 import { Batch } from 'src/app/models/batch';
 import { User } from 'src/app/models/user';
 import { BatchService } from 'src/app/services/batch-service/batch.service';
@@ -21,20 +20,19 @@ import { UserService } from 'src/app/services/user-service/user.service';
 export class SignupModalComponent implements OnInit {
   
   signUpForm: FormGroup;
-  modalRef :BsModalRef;
+  modalRef: BsModalRef;
   user: User;
-  batches:Batch[];
-  batch: Batch = new Batch();
-  options = {componentRestrictions : {
-      country: ['US']
-    }
-  }
-  isDriver: boolean = null;
+  batches: Batch[];
+  batch: Batch;
+
   addressLine: string;
   city: string;
   state: string;
-  zipcode: string;
 
+  //zipcode: string;
+  zip: string;
+
+  addressSupported: boolean = null;
 
   constructor(private modalService :BsModalService, 
     private userService: UserService, private batchService:BatchService ) { }
@@ -60,8 +58,8 @@ export class SignupModalComponent implements OnInit {
   }
 
   generateFormGroup() {
-    //These validators are REQUIRED BY THE DATABASE. DO NOT CHANGE UNLESS YOU KNOW WHAT YOU ARE DOING.
     this.signUpForm = new FormGroup({
+      'isDriver': new FormControl(null, Validators.required),
       'firstname': new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(35), Validators.pattern(/^[A-Za-z]+$/)]),//, ValidationService.stringValidator
       'lastname': new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(35), Validators.pattern(/^[A-Za-z]+$/)]),//, ValidationService.stringValidator
       //email optional (RFC 2822 compliant) regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
@@ -69,28 +67,27 @@ export class SignupModalComponent implements OnInit {
       //phonenumber regex (Valid formats: [(123) 456-7890, (123)456-7890, 123-456-7890, 123.456.7890, 1234567890, +31636363634, 075-63546725]).
       'phonenumber': new FormControl('', [Validators.required, Validators.minLength(10), Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im)]),
       'batch': new FormControl('', Validators.required),
-      //ddress is validated by autocompletion. The field values are readonly- inserted into by the autocomplete field.
+      //Address is validated by autocompletion. The field values are readonly- inserted into by the autocomplete field.
       //Only the required field is needed to ensure that autocomplete is used.
       'address': new FormControl(''),
       'city': new FormControl(''),
       'state': new FormControl(''),
-      'zipcode': new FormControl(''),
+      'zip': new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]),
+      
       'username': new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(12)]),
       'password': new FormControl('', Validators.required)
     })
   }
 
-  setDriver(){
-    if(!this.isDriver){
-      this.isDriver=true;
-      console.log("this.isDriver set to: " + this.isDriver);
-    }
-  }
-
-  setRider(){
-    if(this.isDriver||this.isDriver==null){
-      this.isDriver=false;
-      console.log("this.isDriver set to: " + this.isDriver);
+  /** SETDRIVER()
+    This method is invoked by the buttons of the button group at the top of the form template.
+    The 'driver' button sends a boolean variable of true if the 'isDriver' field is false or null.
+    The 'rider' button sends a boolean variable of false if the 'isDriver' field is true or null.*/
+  setDriver(x: boolean) {
+    if(!this.signUpForm.value.isDriver || this.signUpForm.value.isDriver == null) {
+      this.signUpForm.controls['isDriver'].setValue(x);
+    }else if(this.signUpForm.value.isDriver || this.signUpForm.value.isDriver == null) {
+      this.signUpForm.controls['isDriver'].setValue(x);
     }
   }
 
@@ -104,18 +101,8 @@ export class SignupModalComponent implements OnInit {
 
     this.batchService.getBatchById(batchSplit[0]).subscribe((response)=>{
         this.batch = response;
-        //sessionStorage.setItem('Batch', JSON.stringify(this.batch))
         console.log(this.batch);
       })
-    /*
-    this.batch =JSON.parse(sessionStorage.getItem('Batch'))
-    console.log("From storage:"+this.batch.batchNumber)
-    console.log("From storage:"+this.batch.batchLocation)
-    console.log("From storage:"+this.batch.bAddress)
-    console.log("From storage:"+this.batch.bCity)
-    console.log("From storage:"+this.batch.bState)
-    console.log("From storage:"+this.batch.bZip)
-    */
   }
 
   /** HANDLEUSERNAMECHANGE()
@@ -125,10 +112,12 @@ export class SignupModalComponent implements OnInit {
     //TODO: Write a method that uses AJAX to check if the username added is already existing.
   }
 
-  /** GETGOOGLEPLACEEVENT()
+  /** GETGOOGLEPLACE() <== THIS IS AN ALTERNATIVE IMPLEMENTATION OF GETGOOGLEPLACEEVENT(), IMPLEMENT IN THE CASE THAT CERTAIN ADDRESSES ARE FOUND THAT 
+   *                        <== DO NOT DISPLAY CORRECTLY VIA RYAN'S IMPLEMENTATION, WHICH UTILIZES THE MUCH MORE DETAILED ADDRESS_COMPONENTS ARRAY.
     This method is called on an event emission from the google-place component. It passes us a 
-    reference of the 'place' object created within the component.*/
-  getGooglePlace(place) {
+    reference of the 'place' object created within the component's Autocomplete class field, 
+    provided by Google.*/
+  /*getGooglePlace(place) {
     if(place.formatted_address == 'undefined') {
       console.log("The place object is: ");
       console.log(place);
@@ -149,6 +138,66 @@ export class SignupModalComponent implements OnInit {
       console.log("ZIPCODE = " + stateZip[1]);
       this.zipcode = stateZip[1];
     }
+  }*/
+
+  /** GETGOOGLEPLACE()
+    This method is called on an event emission from the google-place component. It passes us a 
+    reference of the 'place' object created within the component's Autocomplete class field, 
+    provided by Google.*/
+  getGooglePlace(place) {
+    console.log(place)
+    
+    let arrLength = place.address_components.length;
+    let statePlaceholder: string;
+    console.log("array length = " + arrLength);
+    
+    if(arrLength == 7) {
+      console.log("Street: " + place.address_components[0].long_name + " " + place.address_components[1].long_name);
+      console.log("City: " + place.address_components[2].long_name);
+      console.log("State: " + place.address_components[4].short_name);
+      console.log("Zip: " + place.address_components[6].long_name);
+
+      this.signUpForm.controls['address'].setValue(place.address_components[0].long_name + " " + place.address_components[1].long_name);
+      this.signUpForm.controls['city'].setValue(place.address_components[2].long_name);
+      this.signUpForm.controls['state'].setValue(place.address_components[4].short_name);
+      this.signUpForm.controls['zip'].setValue(place.address_components[6].long_name);  
+    }
+
+    else if(arrLength == 8) {
+      statePlaceholder = place.address_components[5].short_name;
+      if(statePlaceholder.match('US')) {
+        this.signUpForm.controls['state'].setValue(place.address_components[4].short_name);
+        this.signUpForm.controls['zip'].setValue(place.address_components[6].long_name);
+      }else {
+        this.signUpForm.controls['state'].setValue(place.address_components[5].short_name);
+        this.signUpForm.controls['zip'].setValue(place.address_components[7].long_name);
+      }
+      this.signUpForm.controls['address'].setValue(place.address_components[0].long_name + " " + place.address_components[1].long_name);
+      this.signUpForm.controls['city'].setValue(place.address_components[2].long_name);
+      console.log("Street: " + place.address_components[0].long_name + " " + place.address_components[1].long_name);
+      console.log("City: " + this.signUpForm.value.city);
+      console.log("stateplaceholder: " + statePlaceholder);
+      console.log("State: " + this.signUpForm.value.state);
+      console.log("Zip: " + this.signUpForm.value.zip);
+    }
+    
+    else if(arrLength == 9) {
+      console.log("Street: " + place.address_components[0].long_name + " " + place.address_components[1].long_name);
+      console.log("City: " + place.address_components[2].long_name);
+      console.log("State: " + place.address_components[5].short_name);
+      console.log("Zip: " + place.address_components[7].long_name);
+      this.signUpForm.controls['address'].setValue(place.address_components[0].long_name + " " + place.address_components[1].long_name);
+      this.signUpForm.controls['city'].setValue(place.address_components[2].long_name);
+      this.signUpForm.controls['state'].setValue(place.address_components[5].short_name);
+      this.signUpForm.controls['zip'].setValue(place.address_components[7].long_name);
+    }else {
+      this.addressSupported = false;
+      console.log("THIS ADDRESS IS NOT SUPPORTED.");
+      return;
+    }
+
+    this.addressSupported = true;
+    console.log("THIS ADDRESS IS SUPPORTED.");
   }
 
   /** ONSUBMIT()
@@ -188,7 +237,7 @@ export class SignupModalComponent implements OnInit {
     This method is for testing purposes. As you can plainly see, it is used to log things to the 
     console and get insight on what is happening in the code.*/
   printSubmitLogs() {
-    console.log("    User is a driver? = " + this.isDriver + ";");
+    console.log("    User is a driver? = " + this.signUpForm.value.isDriver + ";");
     console.log("    Batch number = " + this.batch.batchNumber + ";  Batch location = " + this.batch.batchLocation + ";");
     console.log("    The this.signUpForm.status value is: " + this.signUpForm.status + ";");
     console.log("    This evaluates to: " + Boolean(this.signUpForm.status == "INVALID") + ";");
@@ -200,30 +249,32 @@ export class SignupModalComponent implements OnInit {
     This method creates the required objects for the http request that registers a new user. It 
     then populates them with the values generated by this component/template.*/
   prepareModels() {
+    //Instantiate a User object.
     this.user = new User();
-    
+    //Populate User object with validated data.
     this.user.batch = this.batch;
-    this.user.driver = this.isDriver;
+    this.user.driver = this.signUpForm.value.isDriver;
     this.user.firstName = this.signUpForm.value.firstname;
     this.user.lastName = this.signUpForm.value.lastname;
     this.user.email = this.signUpForm.value.email;
     this.user.phoneNumber = this.signUpForm.value.phonenumber;
-    this.user.hAddress = this.addressLine;
-    this.user.hCity = this.city;
-    this.user.hState = this.state;
-    this.user.hZip = Number(this.zipcode);
-    //THESE WORK ADDRESS FIELDS ARE REQUIRED BY THE BACKEND FOR THE FORM TO SUBMIT SUCCESSFULLY.
+    //HOME ADDRESS
+    this.user.hAddress = this.signUpForm.value.address;
+    this.user.hCity = this.signUpForm.value.city;
+    this.user.hState = this.signUpForm.value.state;
+    this.user.hZip = Number(this.signUpForm.value.zip);
+    //WORK ADDRESS
     this.user.wAddress = this.batch.bAddress;
     this.user.wCity = this.batch.bCity;
     this.user.wState = this.batch.bState;
     this.user.wZip = Number(this.batch.bZip);
-    //YOU WILL GET A 500 RETURN STATUS BECAUSE THERE WON'T BE ANY RESPONSE.
+    
     this.user.userName = this.signUpForm.value.username;
     //NOTE: WE CANNOT PASS THE PASSWORD BECAUSE IT DOESNT EXIST IN THE SPRING USER MODEL.
-    //NOTE: YOU CANNOT CREATE A NEW MODEL OR CHANGE USER WITHOUT REFACTORING A LOT OF CODE.
-    //      THE BACKEND IS EXPECTING A SPECIFIC OBJECT WITH SPECIFIC PARAMETERS.
-    //      USER IS ALSO A DEPENDENCY OF OTHER COMPONENTS IN THE FRONTEND, SO DON'T ADD A PARAMETERIZED CONSTRUCTOR.
-    //(TESTING)Log the Registration model.
+    //NOTE: YOU CANNOT CREATE A NEW MODEL OR CHANGE USER WITHOUT REFACTORING THROUGH A RABBIT HOLE.
+    //  THE BACKEND IS EXPECTING A SPECIFIC OBJECT WITH SPECIFIC PARAMETERS.
+    //  USER MODEL IS ALSO A DEPENDENCY OF OTHER COMPONENTS IN THE FRONTEND, SO DON'T ADD A PARAMETERIZED CONSTRUCTOR.
+    
     console.log("    Prepared the user object as follows:");
     console.log(this.user);
   }
@@ -234,10 +285,23 @@ export class SignupModalComponent implements OnInit {
   sendFormHttpPost() {
     this.userService.addUser(this.user).subscribe(res =>{
       console.log(res)
+      this.modalRef.hide();
+      this.sleep(4000);
+      alert("Registration was successful!");
     }, error=>{
       console.log(error)
     })
     sessionStorage.clear();
+  }
+
+  sleep(milliseconds) {
+    let timeStart = new Date().getTime();
+    while (true) {
+        let elapsedTime = new Date().getTime() - timeStart;
+        if (elapsedTime > milliseconds) {
+            break; 
+        }
+    }
   }
 
   /** FLUSHDATA()
@@ -245,18 +309,17 @@ export class SignupModalComponent implements OnInit {
     the ass-end of the ONSUBMIT method, after the http post for a new user succeeds.*/
   flushData() {
     console.log("    Flushing data...");
-    this.isDriver = null;
     this.addressLine = null;
     this.city = null;
     this.state = null;
-    this.zipcode = null;
-    this.signUpForm.reset();
-    this.user = null;
+    this.zip = null;
+    
     this.batch = null;
+    this.user = null;
+    this.signUpForm.reset();
+
     console.log("    batch object follows:");
     console.log(this.batch);
-    console.log("    isDriver variable follows:");
-    console.log(this.isDriver);
     console.log("    user object follows:");
     console.log(this.user);
     console.log("    signUpForm object follows:");

@@ -23,9 +23,13 @@
 
       <!-- This is the DRIVER / RIDER button group. -->
       <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary" (click)="setDriver()">Driver</button>
-        <button type="button" class="btn btn-primary" (click)="setRider()">Rider</button>
+        <button type="button" class="btn btn-primary" (click)="setDriver(true)">Driver</button>
+        <button type="button" class="btn btn-primary" (click)="setDriver(false)">Rider</button>
       </div>
+      <span 
+        *ngIf="!signUpForm.get('isDriver').valid"
+        class="help-block">This field is required.
+      </span>
 
       <!-- This form group contains the FIRST NAME field input. -->
       <div class="form-group">
@@ -119,8 +123,14 @@
       <!-- This form group contains the AUTOPLACES field input. -->
       <div class="form-group">
         <label for="autoplaces">Address</label>
-        <app-google-place (googlePlaceObj)="getGooglePlace($event)" class="form-control"></app-google-place>
-        <!-- Validation. -->
+        <app-google-place 
+          (googlePlaceObj)="getGooglePlace($event)" 
+          class="form-control">
+        </app-google-place>
+        <span 
+          *ngIf="addressSupported == false"
+          class="help-block">This address is not supported.
+        </span>
         <span 
           *ngIf="this.city==null && signUpForm.get('address').touched"
           class="help-block">Use autocomplete to generate your address.
@@ -143,7 +153,7 @@
       <!-- This form group contains the CITY field input. -->
       <!-- READONLY -->
       <div class="form-group">
-        <label id="hCity">City</label>
+        <label id="city">City</label>
         <input
           readonly
           type="text"
@@ -168,14 +178,18 @@
 
       <!-- This form group contains the ZIP CODE field input. -->
       <div class="form-group">
-        <label for="zipcode">Zip Code</label>
+        <label for="zip">Zip Code</label>
         <input 
-          readonly 
-          type="text" 
-          id="zipcode" 
-          formControlName="zipcode" 
-          class="form-control" 
-          placeholder = "{{zipcode}}">
+        readonly
+          type="text"
+          id="zip"
+          formControlName="zip"
+          class="form-control"
+          placeholder="{{zip}}">
+        <span 
+          *ngIf="!signUpForm.get('zip').valid && signUpForm.get('zip').touched"
+          class="help-block">This field is required.
+        </span>
       </div>
 
 
