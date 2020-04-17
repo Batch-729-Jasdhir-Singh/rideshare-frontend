@@ -286,22 +286,11 @@ export class SignupModalComponent implements OnInit {
     this.userService.addUser(this.user).subscribe(res =>{
       console.log(res)
       this.modalRef.hide();
-      this.sleep(4000);
       alert("Registration was successful!");
     }, error=>{
       console.log(error)
     })
     sessionStorage.clear();
-  }
-
-  sleep(milliseconds) {
-    let timeStart = new Date().getTime();
-    while (true) {
-        let elapsedTime = new Date().getTime() - timeStart;
-        if (elapsedTime > milliseconds) {
-            break; 
-        }
-    }
   }
 
   /** FLUSHDATA()
