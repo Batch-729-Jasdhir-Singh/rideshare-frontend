@@ -37,6 +37,7 @@ export class GooglePlaceComponent implements AfterViewInit {
     google.maps.event.addListener(autocomplete, 'place_changed', () => {
       const place = autocomplete.getPlace();
       //Emit the custom event declared above in the @Output decorator. A reference to the 'place' object is passed as a parameter.
+      //This effectively gives us access to google's 'place_changed' event, which behaves like the 'autocomplete' event in Chrome browser.
       this.googlePlaceObj.emit(place);
     });
 

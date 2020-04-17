@@ -170,14 +170,12 @@
       <div class="form-group">
         <label for="zipcode">Zip Code</label>
         <input 
-          type="text"
-          id="zipcode"
-          formControlName="zipcode"
-          class="form-control">
-        <span 
-          *ngIf="!signUpForm.get('zipcode').valid && signUpForm.get('zipcode').touched"
-          class="help-block">This field is required.
-        </span>
+          readonly 
+          type="text" 
+          id="zipcode" 
+          formControlName="zipcode" 
+          class="form-control" 
+          placeholder = "{{zipcode}}">
       </div>
 
 
