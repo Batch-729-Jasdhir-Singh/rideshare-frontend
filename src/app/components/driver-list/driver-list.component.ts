@@ -293,6 +293,6 @@ getGoogleApi()  {
 
     // if there are more drivers in the array, call this function again with startingIndex equal to endIndex after 2.4 seconds.
     if (endIndex < drivers.length)
-      this.sleep(2400).then(() => this.separateApiCalls(origin, drivers, endIndex));
+      this.sleep(3000).then(() => this.separateApiCalls(origin, drivers, endIndex));
   }
 }
