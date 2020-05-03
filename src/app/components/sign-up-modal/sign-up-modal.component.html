@@ -132,7 +132,7 @@
           class="form-control"/> -->
         <!-- Validation. -->
         <span 
-          *ngIf="this.city==null && signUpForm.get('address').touched"
+          *ngIf="signUpForm.get('address').touched"
           class="help-block">Use autocomplete to generate your address.
         </span>
       </div>
